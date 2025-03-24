@@ -19,5 +19,12 @@ public class Borrower {
     private int borrowerId;
     private String name;
     private String contactNumber;
+    @ManyToMany
+    @JoinTable(
+        name = "borrower_books",
+        joinColums = @JoinColumn("borrowerId"),
+        inverseJoinColumns = @JoinColumn("isbn")
+    )
+    private List<Book> borrowedBooks;
 
 }
