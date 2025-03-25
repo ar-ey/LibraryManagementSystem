@@ -30,6 +30,12 @@ public class BookController {
         return ResponseEntity.ok(addedBook);
     }
 
+    @PutMapping("/books/update/{isbn}")
+    public ResponseEntity<Book> updateBook(@PathVariable String isbn){
+        Book updatedBook = bookService.update(isbn);
+        return ResponseEntity.ok(updatedBook);
+    }
+
     @DeleteMapping("/books/{isbn}")
     public ResponseEntity<HttpStatus> deleteBookById(@PathVariable String isbn) {
         bookService.deleteById(isbn);
