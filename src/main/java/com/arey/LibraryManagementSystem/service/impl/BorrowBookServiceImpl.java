@@ -1,6 +1,7 @@
 package com.arey.LibraryManagementSystem.service.impl;
 
 import com.arey.LibraryManagementSystem.model.entity.Borrower;
+import com.arey.LibraryManagementSystem.repository.BookRepository;
 import com.arey.LibraryManagementSystem.repository.BorrowerRepository;
 import com.arey.LibraryManagementSystem.service.BorrowBookService;
 import org.springframework.stereotype.Service;
@@ -10,10 +11,10 @@ import java.util.Optional;
 @Service
 public class BorrowBookServiceImpl implements BorrowBookService {
 
-    private BorrowerRepository borrowerRepository;
-    private BookRepository bookRepository;
+    private final BorrowerRepository borrowerRepository;
+    private final BookRepository bookRepository;
 
-    public BorrowBookServiceImpl(BorrowerRepository borrowerRepository, AuthorRepository authorRepository){
+    public BorrowBookServiceImpl(BorrowerRepository borrowerRepository, BookRepository bookRepository){
         this.borrowerRepository = borrowerRepository;
         this.bookRepository = bookRepository;
     }
@@ -21,19 +22,25 @@ public class BorrowBookServiceImpl implements BorrowBookService {
     @Override
     public Optional<Borrower> borrowBook(int borrowerId, String isbn) {
 
-        Book book = bookRepository.findById(isbn);
-
-        if(book.isPresent() && !book.isBorrowed) {
-            book.setIsBorrowed(true);
-        }
-        return borrowerRepository.findById(borrowerId).;
+        bookRepository.findById(isbn).ifPresent(book -> {
+            if(book.getCurrentBorrower() == null){
+                book.setCurrentBorrower(borrowerId);
+                bookRepository.save(book);
+            }
+        });
+        return borrowerRepository.findById(borrowerId);
         
     }
 
     @Override
-    public void returnBook(int borrowerId, String isbn) {
-        book.setIsBorrowed(false);
-        //TODO update booksBorrowed of borrower
+    public Optional<Borrower> returnBook(int borrowerId, String isbn) {
+        bookRepository.findById(isbn).ifPresent(book -> {
+            if(book.getCurrentBorrower() == borrowerId) {
+                book.setCurrentBorrower(null);
+                bookRepository.save(book);
+            }
+        });
+       //TODO update booksBorrowed of borrower
         return borrowerRepository.findById(borrowerId);
     }
 

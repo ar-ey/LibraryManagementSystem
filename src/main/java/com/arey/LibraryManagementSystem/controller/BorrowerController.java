@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 public class BorrowerController {
 
-    private BorrowerService borrowerService;
-    private BorrowBookService borrowBookService;
+    private final BorrowerService borrowerService;
+    private final BorrowBookService borrowBookService;
 
-    public BorrowerController(BorrowerService borrowerService) {
+    public BorrowerController(BorrowerService borrowerService, BorrowBookService borrowBookService) {
         this.borrowerService = borrowerService;
+        this.borrowBookService = borrowBookService;
     }
 
     @GetMapping("/borrowers")
@@ -38,7 +38,7 @@ public class BorrowerController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("borrowers{id}/borrow/{isbn}")
+    @PostMapping("/borrowers/{id}/borrow/{isbn}")
     public ResponseEntity<Optional<Borrower>> borrowBook(@PathVariable int id, @PathVariable String isbn){
         return ResponseEntity.ok(borrowBookService.borrowBook(id,isbn));
     }

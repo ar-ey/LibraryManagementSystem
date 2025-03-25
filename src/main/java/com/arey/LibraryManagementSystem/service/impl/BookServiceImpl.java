@@ -6,12 +6,11 @@ import com.arey.LibraryManagementSystem.service.BookService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class BookServiceImpl implements BookService {
 
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
     public BookServiceImpl(BookRepository bookRepository){
         this.bookRepository = bookRepository;
@@ -23,6 +22,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book add(Book book) {
+
         return bookRepository.save(book);
     }
 

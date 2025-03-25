@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,7 +23,8 @@ public class Book {
             joinColumns = @JoinColumn(name = "isbn"),
             inverseJoinColumns = @JoinColumn(name = "authorId")
     )
+    @NonNull
     private List<Author> authors;
-    private boolean isBorrowed;
+    private Integer currentBorrower;
 
 }
