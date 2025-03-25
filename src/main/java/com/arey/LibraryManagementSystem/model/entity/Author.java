@@ -23,6 +23,4 @@ public class Author {
     private String biography;
     private Date dateOfBirth;
 
-    @ManyToMany(mappedBy = "authors")
-    private Set<Book> books;
 }
